@@ -51,7 +51,7 @@ BOARD_USES_RECOVERY_AS_BOOT := true
 TARGET_RECOVERY_UPDATER_LIBS += librecovery_updater_msm
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3221225472
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 3221225472
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 48318382080
 BOARD_PERSISTIMAGE_PARTITION_SIZE := 33554432
 BOARD_PERSISTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
@@ -66,7 +66,7 @@ ifeq ($(TARGET_KERNEL_VERSION),4.4)
 else
      BOARD_KERNEL_CMDLINE += console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 earlycon=msm_hsl_uart,0xc1b0000
 endif
-BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1
+BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=1
 endif
 
 BOARD_EGL_CFG := device/qcom/sdm660_64/egl.cfg
@@ -138,3 +138,5 @@ TARGET_USES_IMS := true
 
 #Add NON-HLOS files for ota upgrade
 ADD_RADIO_FILES := true
+
+BOARD_HAL_STATIC_LIBRARIES := libhealthd.msm
