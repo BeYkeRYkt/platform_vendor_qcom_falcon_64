@@ -77,6 +77,8 @@ ro.opengles.version=196610
 
 # system property for maximum number of HFP client connections
 bt.max.hfpclient.connections=1
+#force disable Bluetooth AAC by default
+persist.bt.a2dp.aac_disable=true
 
 # System property for cabl
 ro.qualcomm.cabl=2
@@ -147,7 +149,7 @@ ro.hwui.texture_cache_flushrate=0.4
 ro.hwui.text_small_cache_width=1024
 ro.hwui.text_small_cache_height=1024
 ro.hwui.text_large_cache_width=2048
-ro.hwui.text_large_cache_height=1024
+ro.hwui.text_large_cache_height=2048
 
 # enable navigation bar
 qemu.hw.mainkeys=0
@@ -182,3 +184,10 @@ camera.aux.packagelist=org.codeaurora.snapcam
 
 # Create zram disk
 ro.config.zram=true
+
+#Set cutoff voltage to 3200mV
+ro.cutoff_voltage_mv=3200
+
+#Memperf properties
+ro.memperf.enable=true
+ro.memperf.lib=libmemperf.so
