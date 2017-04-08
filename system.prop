@@ -149,7 +149,7 @@ ro.hwui.texture_cache_flushrate=0.4
 ro.hwui.text_small_cache_width=1024
 ro.hwui.text_small_cache_height=1024
 ro.hwui.text_large_cache_width=2048
-ro.hwui.text_large_cache_height=1024
+ro.hwui.text_large_cache_height=2048
 
 # enable navigation bar
 qemu.hw.mainkeys=0
@@ -176,11 +176,15 @@ ro.qti.sensors.cmc=false
 #Gesture
 ro.qti.sdk.sensors.gestures=false
 
-#low power mode for camera
-camera.lowpower.record.enable=1
-
 #Expose aux camera for below packages
 camera.aux.packagelist=org.codeaurora.snapcam
 
 # Create zram disk
 ro.config.zram=true
+
+#Set cutoff voltage to 3200mV
+ro.cutoff_voltage_mv=3200
+
+# Memperf properties
+ro.memperf.enable=true
+ro.memperf.lib=libmemperf.so
