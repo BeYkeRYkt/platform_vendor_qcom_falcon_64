@@ -53,6 +53,7 @@ on fs
     mkdir /persist/data 0700 system system
     mkdir /persist/bms 0700 root system
     restorecon_recursive /persist
+    write /sys/kernel/boot_adsp/boot 1
 
 on post-fs
     start qseecomd
@@ -186,10 +187,6 @@ service thermal-engine /system/vendor/bin/thermal-engine
 #    class core
 #    oneshot
 #
-service time_daemon /system/bin/time_daemon
-   class late_start
-   user root
-   group root
 
 service adsprpcd /system/bin/adsprpcd audiopd
    class main
