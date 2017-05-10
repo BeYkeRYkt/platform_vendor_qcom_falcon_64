@@ -53,6 +53,7 @@ on fs
     mkdir /persist/data 0700 system system
     mkdir /persist/bms 0700 root system
     restorecon_recursive /persist
+    write /sys/kernel/boot_adsp/boot 1
 
 on post-fs
     start qseecomd
@@ -86,8 +87,6 @@ on boot
     write /dev/cpuset/top-app/cpus 0-7
     write /dev/cpuset/foreground/cpus 0-7
     write /dev/cpuset/foreground/boost/cpus 0-7
-    write /dev/cpuset/background/cpus 0
-    write /dev/cpuset/system-background/cpus 0-2
     ####Regionalization config and prop files####
     chmod 0644 /persist/speccfg/spec
     chmod 0644 /persist/speccfg/devicetype
@@ -177,6 +176,7 @@ service thermal-engine /system/vendor/bin/thermal-engine
    socket thermal-send-client stream 0666 system system
    socket thermal-recv-client stream 0660 system system
    socket thermal-recv-passive-client stream 0666 system system
+   socket thermal-send-rule stream 0660 system system
    group root
 
 #service security-check1 /sbin/security_boot_check system
