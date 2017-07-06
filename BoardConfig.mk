@@ -19,13 +19,6 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53
 
-ifeq ($(TARGET_USES_AOSP), true)
-   TARGET_HW_DISK_ENCRYPTION := false
-else
-   #Enable HW based full disk encryption
-   TARGET_HW_DISK_ENCRYPTION := true
-endif
-
 TARGET_NO_BOOTLOADER := false
 TARGET_USES_UEFI := true
 TARGET_NO_KERNEL := false
@@ -72,7 +65,6 @@ ifeq ($(ENABLE_VENDOR_IMAGE), true)
 BOARD_VENDORIMAGE_PARTITION_SIZE := 838860800
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
-VENDOR_FSTAB_ENTRY := "/dev/block/bootdevice/by-name/vendor     /vendor            ext4   ro,barrier=1,discard                             wait,slotselect,verify"
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 endif
 
@@ -93,7 +85,7 @@ ifeq ($(TARGET_KERNEL_VERSION),4.4)
 else
      BOARD_KERNEL_CMDLINE += console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 earlycon=msm_hsl_uart,0xc1b0000
 endif
-BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=1 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=1
 endif
 
 BOARD_EGL_CFG := device/qcom/sdm660_64/egl.cfg
@@ -131,7 +123,7 @@ TARGET_COMPILE_WITH_MSM_KERNEL := true
 TARGET_PD_SERVICE_ENABLED := true
 
 #Enable HW based full disk encryption
-#TARGET_HW_DISK_ENCRYPTION := true
+TARGET_HW_DISK_ENCRYPTION := true
 
 TARGET_CRYPTFS_HW_PATH := device/qcom/common/cryptfs_hw
 

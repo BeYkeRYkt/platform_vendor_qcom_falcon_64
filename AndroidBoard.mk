@@ -54,14 +54,6 @@ LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_ETC)/init/hw
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE       := init.target.vendor.rc
-LOCAL_MODULE_TAGS  := optional eng
-LOCAL_MODULE_CLASS := ETC
-LOCAL_SRC_FILES    := $(LOCAL_MODULE)
-LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_ETC)/init
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
 LOCAL_MODULE       := gpio-keys.kl
 LOCAL_MODULE_TAGS  := optional eng
 LOCAL_MODULE_CLASS := ETC
@@ -75,9 +67,6 @@ LOCAL_MODULE_TAGS  := optional eng
 LOCAL_MODULE_CLASS := ETC
 LOCAL_SRC_FILES    := $(LOCAL_MODULE)
 LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_ETC)
-ifeq ($(ENABLE_VENDOR_IMAGE), true)
-LOCAL_POST_INSTALL_CMD := echo $(VENDOR_FSTAB_ENTRY) >> $(LOCAL_MODULE_PATH)/$(LOCAL_MODULE)
-endif
 include $(BUILD_PREBUILT)
 
 ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
@@ -130,9 +119,9 @@ LOCAL_MODULE_PATH  := $(TARGET_OUT_ETC)/wifi
 include $(BUILD_PREBUILT)
 
 # Create symbolic links for WLAN
-$(shell mkdir -p $(TARGET_OUT_ETC)/firmware/wlan/qca_cld; \
-ln -sf /system/etc/wifi/WCNSS_qcom_cfg.ini \
-$(TARGET_OUT_ETC)/firmware/wlan/qca_cld/WCNSS_qcom_cfg.ini)
+$(shell mkdir -p $(TARGET_OUT_VENDOR)/firmware/wlan/qca_cld; \
+ln -sf /vendor/etc/wifi/WCNSS_qcom_cfg.ini \
+$(TARGET_OUT_VENDOR)/firmware/wlan/qca_cld/WCNSS_qcom_cfg.ini)
 endif
 
 # Create symbolic links for msadp
