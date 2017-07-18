@@ -23,7 +23,7 @@ TARGET_DISABLE_DASH := true
 TARGET_KERNEL_VERSION := 4.4
 BOARD_FRP_PARTITION_NAME := frp
 BOARD_HAVE_QCOM_FM := true
-TARGET_USES_NQ_NFC := false
+TARGET_USES_NQ_NFC := true
 
 ifeq ($(TARGET_USES_NQ_NFC),true)
 # Flag to enable and support NQ3XX chipsets
@@ -201,6 +201,8 @@ PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/bootdevice/by-name/vendor
 endif
 
 PRODUCT_FULL_TREBLE_OVERRIDE := true
+
+PRODUCT_VENDOR_MOVE_ENABLED := true
 
 #for android_filesystem_config.h
 PRODUCT_PACKAGES += \
