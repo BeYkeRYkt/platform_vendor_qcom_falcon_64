@@ -18,8 +18,8 @@ ifeq ($(ENABLE_VENDOR_IMAGE), true)
 #TARGET_USES_QTIC := false
 endif
 
-TARGET_USES_AOSP_FOR_AUDIO := true
-TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
+TARGET_USES_AOSP_FOR_AUDIO := false
+TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 TARGET_DISABLE_DASH := true
 
 TARGET_KERNEL_VERSION := 4.4
@@ -49,6 +49,8 @@ PRODUCT_COPY_FILES += \
     device/qcom/sdm660_64/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_vendor.xml \
     device/qcom/sdm660_64/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
     device/qcom/sdm660_64/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml
+PRODUCT_PROPERTY_OVERRIDES  += \
+    media.settings.xml=/vendor/etc/media_profiles_vendor.xml
 endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 
 # video seccomp policy files
@@ -116,14 +118,15 @@ PRODUCT_BOOT_JARS += telephony-ext
 PRODUCT_PACKAGES += telephony-ext
 
 ifneq ($(strip $(QCPATH)),)
-#PRODUCT_BOOT_JARS += WfdCommon
+PRODUCT_BOOT_JARS += WfdCommon
 #Android oem shutdown hook
 PRODUCT_BOOT_JARS += oem-services
 endif
 
 # system prop for Bluetooth SOC type
 PRODUCT_PROPERTY_OVERRIDES += \
-    qcom.bluetooth.soc=cherokee
+    qcom.bluetooth.soc=cherokee \
+    vendor.qcom.bluetooth.soc=cherokee
 
 ifeq ($(strip $(BOARD_HAVE_QCOM_FM)),true)
 PRODUCT_BOOT_JARS += qcom.fmradio
