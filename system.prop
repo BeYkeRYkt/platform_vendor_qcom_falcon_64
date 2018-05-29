@@ -76,8 +76,8 @@ ro.netflix.bsp_rev=Q660-13149-1
 #
 # system props for the data modules
 #
-ro.use_data_netmgrd=true
-persist.data.mode=concurrent
+ro.vendor.use_data_netmgrd=true
+persist.vendor.data.mode=concurrent
 #system props for time-services
 persist.timed.enable=true
 
@@ -148,7 +148,7 @@ ro.hwui.text_large_cache_width=2048
 ro.hwui.text_large_cache_height=2048
 
 #Bringup properties
-persist.radio.atfwd.start=true
+persist.vendor.radio.atfwd.start=true
 
 #property to enable VDS WFD solution
 persist.hwc.enable_vds=1
