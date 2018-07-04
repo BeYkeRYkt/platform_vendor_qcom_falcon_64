@@ -1,8 +1,6 @@
 TARGET_USES_AOSP := true
 
-#ifneq ($(TARGET_USES_AOSP),true)
-#  DEVICE_PACKAGE_OVERLAYS := device/qcom/sdm660_64/overlay
-#endif
+DEVICE_PACKAGE_OVERLAYS := device/qcom/sdm660_64/overlay
 
 # Default vendor configuration.
 ifeq ($(ENABLE_VENDOR_IMAGE),)
@@ -128,7 +126,6 @@ endif
 
 # system prop for Bluetooth SOC type
 PRODUCT_PROPERTY_OVERRIDES += \
-    qcom.bluetooth.soc=cherokee \
     vendor.qcom.bluetooth.soc=cherokee
 
 DEVICE_MANIFEST_FILE := device/qcom/sdm660_64/manifest.xml
@@ -153,8 +150,7 @@ endif
 
 # WLAN driver configuration file
 PRODUCT_COPY_FILES += \
-    device/qcom/sdm660_64/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/WCNSS_qcom_cfg.ini \
-    device/qcom/sdm660_64/wifi_concurrency_cfg.txt:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wifi_concurrency_cfg.txt
+    device/qcom/sdm660_64/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/WCNSS_qcom_cfg.ini
 
 PRODUCT_PACKAGES += \
     wpa_supplicant_overlay.conf \
@@ -316,3 +312,5 @@ PRODUCT_PACKAGES += android.hardware.thermal@1.0-impl \
                     android.hardware.thermal@1.0-service
 
 SDM660_DISABLE_MODULE := true
+
+PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE:=true

@@ -67,7 +67,6 @@ on post-fs-data
     mkdir /data/tombstones/wcnss 0771 system system
     mkdir /data/tombstones/dsps 0771 system system
     mkdir /data/vendor/hbtp 0750 system system
-    mkdir /persist/qti_fp 0700 system system
     mkdir /data/misc/seemp 0700 system system
     mkdir /data/vendor/tloc 0700 system drmrpc
 
@@ -102,7 +101,6 @@ on boot
 
 #Load WLAN driver
    insmod /vendor/lib/modules/qca_cld3/qca_cld3_wlan.ko
-   setprop wlan.driver.status "ok"
 
 #USB controller configuration
     setprop vendor.usb.rndis.func.name "rndis_bam"
@@ -374,6 +372,15 @@ service pd_mapper /system/vendor/bin/pd-mapper
 on property:vendor.ims.QMI_DAEMON_STATUS=1
     start vendor.imsdatadaemon
 
+on property:vold.decrypt=trigger_restart_framework
+   start cnss_diag
+
+service cnss_diag /system/vendor/bin/cnss_diag -q -f -t HELIUM
+   class main
+   user system
+   group system wifi inet sdcard_rw media_rw diag
+   oneshot
+
 service vendor.ims_rtp_daemon /system/vendor/bin/ims_rtp_daemon
    class main
    user system
@@ -383,12 +390,10 @@ service vendor.ims_rtp_daemon /system/vendor/bin/ims_rtp_daemon
 service vendor.imsrcsservice /system/vendor/bin/imsrcsd
    class main
    user system
-   group radio diag inet log
-   disabled
+   group radio diag inet log wakelock
 
 on property:vendor.ims.DATA_DAEMON_STATUS=1
     start vendor.ims_rtp_daemon
-    start vendor.imsrcsservice
 
 
 service ppd /system/vendor/bin/mm-pp-dpps
@@ -447,11 +452,6 @@ service seempd /system/bin/seempd
     user system
     group system sdcard_rw
     socket seempdw dgram 0666 system system
-
-service qfp-daemon /vendor/bin/qfp-daemon
-    class late_start
-    user system
-    group system drmrpc diag input
 
 service vendor.tlocd /vendor/bin/tloc_daemon
     class late_start
