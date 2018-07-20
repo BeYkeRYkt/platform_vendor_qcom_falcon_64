@@ -50,8 +50,6 @@ PRODUCT_COPY_FILES += \
     device/qcom/sdm660_64/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
     device/qcom/sdm660_64/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
     device/qcom/sdm660_64/media_codecs_vendor_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_vendor_audio.xml
-PRODUCT_PROPERTY_OVERRIDES  += \
-    media.settings.xml=/vendor/etc/media_profiles_vendor.xml
 endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 
 # video seccomp policy files
@@ -130,6 +128,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 DEVICE_MANIFEST_FILE := device/qcom/sdm660_64/manifest.xml
 DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
+DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/sdm660_64/framework_manifest.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := device/qcom/common/vendor_framework_compatibility_matrix.xml
 
 # Audio configuration file
 -include $(TOPDIR)hardware/qcom/audio/configs/sdm660/sdm660.mk
@@ -298,6 +298,9 @@ ifeq ($(ENABLE_VENDOR_IMAGE), true)
 KMGK_USE_QTI_SERVICE := true
 endif
 
+#Enable KEYMASTER 4.0
+ENABLE_KM_4_0 := true
+
 #Enable AOSP KEYMASTER and GATEKEEPER HIDLs
 ifneq ($(KMGK_USE_QTI_SERVICE), true)
 PRODUCT_PACKAGES += android.hardware.gatekeeper@1.0-impl \
@@ -314,3 +317,6 @@ PRODUCT_PACKAGES += android.hardware.thermal@1.0-impl \
 SDM660_DISABLE_MODULE := true
 
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE:=true
+
+# Enable vndk-sp Libraries
+PRODUCT_PACKAGES += vndk_package
