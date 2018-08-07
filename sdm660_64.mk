@@ -219,6 +219,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # FBE support
 PRODUCT_COPY_FILES += \
     device/qcom/sdm660_64/init.qti.qseecomd.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.qseecomd.sh
+# VB xml
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.software.verified_boot.xml:system/etc/permissions/android.software.verified_boot.xml
 
 # MIDI feature
 PRODUCT_COPY_FILES += frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
@@ -320,3 +323,5 @@ PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE:=true
 
 # Enable vndk-sp Libraries
 PRODUCT_PACKAGES += vndk_package
+
+TARGET_MOUNT_POINTS_SYMLINKS := false
