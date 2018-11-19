@@ -35,6 +35,7 @@ endif
 # enable the SVA in UI area
 TARGET_USE_UI_SVA := true
 
+TARGET_USES_MKE2FS := true
 #QTIC flag
 -include $(QCPATH)/common/config/qtic-config.mk
 
@@ -46,10 +47,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
 ifeq ($(TARGET_ENABLE_QC_AV_ENHANCEMENTS), true)
 PRODUCT_COPY_FILES += \
     device/qcom/sdm660_64/media_profiles.xml:system/etc/media_profiles.xml \
+    device/qcom/sdm660_64/media_profiles_sdm660_v1.xml:system/etc/media_profiles_sdm660_v1.xml \
     device/qcom/sdm660_64/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_vendor.xml \
+    device/qcom/sdm660_64/media_profiles_sdm660_v1.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_sdm660_v1.xml \
     device/qcom/sdm660_64/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
     device/qcom/sdm660_64/media_codecs_vendor.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_vendor.xml \
+    device/qcom/sdm660_64/media_codecs_sdm660_v1.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_sdm660_v1.xml \
     device/qcom/sdm660_64/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
+    device/qcom/sdm660_64/media_codecs_performance_sdm660_v1.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance_sdm660_v1.xml \
     device/qcom/sdm660_64/media_codecs_vendor_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_vendor_audio.xml
 endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 
@@ -57,10 +62,6 @@ endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 PRODUCT_COPY_FILES += \
     device/qcom/sdm660_64/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
     device/qcom/sdm660_64/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
-
-PRODUCT_COPY_FILES += device/qcom/sdm660_64/whitelistedapps.xml:$(TARGET_COPY_OUT_VENDOR)/etc/whitelistedapps.xml \
-                      device/qcom/sdm660_64/gamedwhitelist.xml:$(TARGET_COPY_OUT_VENDOR)/etc/gamedwhitelist.xml \
-                      device/qcom/sdm660_64/appboosts.xml:$(TARGET_COPY_OUT_VENDOR)/etc/appboosts.xml
 
 
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -119,8 +120,6 @@ PRODUCT_PACKAGES += telephony-ext
 
 ifneq ($(strip $(QCPATH)),)
 PRODUCT_BOOT_JARS += WfdCommon
-#Android oem shutdown hook
-PRODUCT_BOOT_JARS += oem-services
 endif
 
 # system prop for Bluetooth SOC type
@@ -131,6 +130,8 @@ DEVICE_MANIFEST_FILE := device/qcom/sdm660_64/manifest.xml
 DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/sdm660_64/framework_manifest.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := device/qcom/common/vendor_framework_compatibility_matrix.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
+    device/qcom/sdm660_64/vendor_framework_compatibility_matrix.xml
 
 # Audio configuration file
 -include $(TOPDIR)hardware/qcom/audio/configs/sdm660/sdm660.mk
@@ -206,10 +207,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.proximity.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.proximity.xml \
     frameworks/native/data/etc/android.hardware.sensor.barometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.barometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.stepcounter.xml \
-    frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.stepdetector.xml \
-    frameworks/native/data/etc/android.hardware.sensor.ambient_temperature.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.ambient_temperature.xml \
-    frameworks/native/data/etc/android.hardware.sensor.relative_humidity.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.relative_humidity.xml \
-    frameworks/native/data/etc/android.hardware.sensor.hifi_sensors.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.hifi_sensors.xml
+    frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.stepdetector.xml
 
 #Facing, CMC and Gesture
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -252,20 +250,6 @@ PRODUCT_PACKAGES += \
 #PRODUCT_PACKAGE_OVERLAYS := $(QCPATH)/qrdplus/Extension/res \
 #       $(QCPATH)/qrdplus/globalization/multi-language/res-overlay \
 #      $(PRODUCT_PACKAGE_OVERLAYS)
-
-# Enable logdumpd service only for non-perf bootimage
-ifeq ($(findstring perf,$(KERNEL_DEFCONFIG)),)
-    ifeq ($(TARGET_BUILD_VARIANT),user)
-        PRODUCT_DEFAULT_PROPERTY_OVERRIDES+= \
-            ro.logdumpd.enabled=0
-    else
-        PRODUCT_DEFAULT_PROPERTY_OVERRIDES+= \
-            ro.logdumpd.enabled=1
-    endif
-else
-    PRODUCT_DEFAULT_PROPERTY_OVERRIDES+= \
-        ro.logdumpd.enabled=0
-endif
 
 #for wlan
 PRODUCT_PACKAGES += \
@@ -326,3 +310,8 @@ PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE:=true
 PRODUCT_PACKAGES += vndk_package
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
+
+$(call inherit-product, build/make/target/product/product_launched_with_p.mk)
+
+# Enable STA + SAP Concurrency.
+WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
